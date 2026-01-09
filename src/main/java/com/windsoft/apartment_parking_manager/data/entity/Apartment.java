@@ -1,20 +1,22 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
 import com.windsoft.apartment_parking_manager.data.entity.id.ApartmentId;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Getter
+@IdClass(ApartmentId.class)
 @Table(name = "apartment")
 @Entity
 public class Apartment {
 
-    @EmbeddedId
-    private ApartmentId id;
+    @Id
+    private String aptCode;
 
     private String aptName;
 
@@ -29,5 +31,4 @@ public class Apartment {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
 }
