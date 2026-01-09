@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApartmentRepository extends JpaRepository<Apartment, ApartmentId> {
 
-    Apartment findByAddress(String address);
+    Apartment findByAddressAndStatus(String address, String status);
 }

@@ -14,6 +14,6 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public Apartment retriveApartmentByAddress(String address) {
-        return apartmentRepository.findByAddress(address);
+        return apartmentRepository.findByAddressAndStatus(address, "ACTIVE");
     }
 }

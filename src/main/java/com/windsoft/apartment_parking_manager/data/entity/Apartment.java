@@ -24,6 +24,8 @@ public class Apartment {
 
     private Integer resident;
 
+    private String status;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
