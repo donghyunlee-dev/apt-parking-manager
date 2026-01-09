@@ -2,10 +2,10 @@ package com.windsoft.apartment_parking_manager.data.entity;
 
 import com.windsoft.apartment_parking_manager.data.entity.id.ApartmentId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
