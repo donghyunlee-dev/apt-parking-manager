@@ -1,5 +1,7 @@
 package com.windsoft.apartment_parking_manager.controller;
 
+import com.windsoft.apartment_parking_manager.data.dto.ApartmentRequestDto;
+import com.windsoft.apartment_parking_manager.data.dto.ApartmentResponseDto;
 import com.windsoft.apartment_parking_manager.data.entity.Apartment;
 import com.windsoft.apartment_parking_manager.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,9 @@ public class ApartmentController {
     private final ApartmentService apartmentService;
 
     @GetMapping
-    public ResponseEntity<?> searchApartmentInfo(@RequestParam String address) {
-
-        Apartment apartment = apartmentService.retriveApartmentByAddress(address);
-        return new ResponseEntity<>(apartment, HttpStatus.OK);
+    public ResponseEntity<?> searchApartmentInfo(@ModelAttribute ApartmentRequestDto.verify request) {
+        Apartment apartment = apartmentService.retriveApartmentByAddress(request.getAddress());
+        ApartmentResponseDto response = ApartmentResponseDto.toDto(apartment);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
