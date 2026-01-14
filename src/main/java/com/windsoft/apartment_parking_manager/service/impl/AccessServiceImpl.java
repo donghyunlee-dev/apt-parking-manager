@@ -25,7 +25,7 @@ public class AccessServiceImpl implements AccessService {
     @Override
     public AccessResponseDto validateAccess(AccessRequestDto requestDto) {
 
-        List<Bouncer> bouncers = bouncerRepository.findByAptCode(requestDto.getAptCode());
+        List<Bouncer> bouncers = bouncerRepository.findByAptCodeAndUsed(requestDto.getAptCode(), "Y");
 
         if (bouncers.isEmpty()) {
             return AccessResponseDto.noData();
