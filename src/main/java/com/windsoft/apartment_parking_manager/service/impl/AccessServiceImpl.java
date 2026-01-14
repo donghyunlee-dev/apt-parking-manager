@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -31,14 +32,18 @@ public class AccessServiceImpl implements AccessService {
             return AccessResponseDto.noData();
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        Bouncer findBouncer;
+        Bouncer findBouncer = null;
+
         for (Bouncer bouncer : bouncers) {
             if (encoder.matches(requestDto.getFinCode(), bouncer.getFinNo())) {
                 findBouncer = CustomObjectUtils.deepCopy(bouncer, Bouncer.class);
             }
-
         }
 
-        return null;
+        if (ObjectUtils.isEmpty(findBouncer)) {
+            return AccessResponseDto.noData();
+        }
+
+        return AccessResponseDto.setData(findBouncer);
     }
 }
