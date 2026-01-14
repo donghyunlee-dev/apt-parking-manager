@@ -11,13 +11,13 @@ public class AccessResponseDto {
 
     private String bouncerName;
 
-    private String result;
+    private String grade;
 
     public static AccessResponseDto noData() {
         AccessResponseDto emptyResponse = new AccessResponseDto();
         emptyResponse.bouncerCode = "";
         emptyResponse.bouncerName = "";
-        emptyResponse.result = "failed";
+        emptyResponse.grade = "";
         return emptyResponse;
     }
 }
