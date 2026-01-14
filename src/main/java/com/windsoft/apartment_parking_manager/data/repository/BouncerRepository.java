@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BouncerRepository extends JpaRepository<Bouncer, BouncerId> {
-    List<Bouncer> findByAptCode(String aptCode);
+    List<Bouncer> findByAptCodeAndUsed(String aptCode, String used);
 
 }
