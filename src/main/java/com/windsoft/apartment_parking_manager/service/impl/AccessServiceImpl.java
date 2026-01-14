@@ -2,14 +2,13 @@ package com.windsoft.apartment_parking_manager.service.impl;
 
 import com.windsoft.apartment_parking_manager.data.dto.AccessRequestDto;
 import com.windsoft.apartment_parking_manager.data.dto.AccessResponseDto;
+import com.windsoft.apartment_parking_manager.data.entity.AccessLog;
 import com.windsoft.apartment_parking_manager.data.entity.Bouncer;
 import com.windsoft.apartment_parking_manager.data.repository.AccessLogRepository;
 import com.windsoft.apartment_parking_manager.data.repository.BouncerRepository;
 import com.windsoft.apartment_parking_manager.service.AccessService;
 import com.windsoft.apartment_parking_manager.util.CustomObjectUtils;
-import jakarta.persistence.Access;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -22,6 +21,7 @@ public class AccessServiceImpl implements AccessService {
 
     private final AccessLogRepository accessLogRepository;
     private final BouncerRepository bouncerRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     public AccessResponseDto validateAccess(AccessRequestDto requestDto) {
@@ -31,7 +31,7 @@ public class AccessServiceImpl implements AccessService {
         if (bouncers.isEmpty()) {
             return AccessResponseDto.noData();
         }
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
+
         Bouncer findBouncer = null;
 
         for (Bouncer bouncer : bouncers) {
@@ -43,7 +43,8 @@ public class AccessServiceImpl implements AccessService {
         if (ObjectUtils.isEmpty(findBouncer)) {
             return AccessResponseDto.noData();
         }
-
+        AccessLog accessLog = AccessLog.toEntity(requestDto, findBouncer);
+        accessLogRepository.save(accessLog);
         return AccessResponseDto.setData(findBouncer);
     }
 }
