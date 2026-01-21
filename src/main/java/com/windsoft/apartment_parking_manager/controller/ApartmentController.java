@@ -19,7 +19,15 @@ public class ApartmentController {
     @GetMapping
     public ResponseEntity<?> searchApartmentInfo(@ModelAttribute ApartmentRequestDto.verify request) {
         Apartment apartment = apartmentService.retriveApartmentByAddress(request.getAddress());
-        ApartmentResponseDto response = ApartmentResponseDto.toDto(apartment);
+
+        ApartmentResponseDto response;
+
+        if (apartment == null) {
+            response = ApartmentResponseDto.noData();
+        } else {
+            response = ApartmentResponseDto.setData(apartment);
+        }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
