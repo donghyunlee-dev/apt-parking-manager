@@ -24,4 +24,12 @@ public class ResidentVehicle extends BaseEntity {
     private String phone;
 
     private boolean used;
+
+    public String getInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(bdId);
+        sb.append(" ");
+        sb.append(bdUnit);
+        return sb.toString();
+    }
 }
