@@ -1,5 +1,7 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
+import com.windsoft.apartment_parking_manager.data.dto.RequestContextDto;
+import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
 import com.windsoft.apartment_parking_manager.data.entity.id.ParkingVehicleId;
 import com.windsoft.apartment_parking_manager.type.VehicleType;
 import jakarta.persistence.*;
@@ -28,7 +30,7 @@ public class ParkingVehicle {
     @Enumerated(EnumType.STRING)
     private VehicleType type;
 
-    private String location;
+    private String appVersion;
 
     private String deviceId;
 
@@ -41,5 +43,16 @@ public class ParkingVehicle {
         this.createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
                 .withZoneSameInstant(ZoneId.of("Asia/Seoul"))
                 .toLocalDateTime();
+    }
+
+    public static ParkingVehicle setData(RequestContextDto context, VehicleResponseDto info) {
+        ParkingVehicle vehicle = new ParkingVehicle();
+        vehicle.aptCode = context.getAptCode();
+        vehicle.bouncerCode = context.getBouncerCode();
+        vehicle.deviceId = context.getDeviceId();
+        vehicle.appVersion = context.getAppVersion();
+        vehicle.vehicleNo = info.getVehicleNo();
+        vehicle.type = info.getStatus();
+        return vehicle;
     }
 }
