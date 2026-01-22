@@ -46,7 +46,8 @@ public class RequestContextArgumentResolver implements HandlerMethodArgumentReso
             throw new MissingRequestHeaderException(HEADER_APP_VERSION, parameter);
         }
 
-        return new RequestContext(aptCode, boucode, deviceId, appVersion);
+        return new RequestContext(aptCode, bouncerCode, deviceId, appVersion);
     }
 }
+
 
