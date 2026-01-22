@@ -22,7 +22,7 @@ public class VisitVehicle extends BaseEntity {
 
     private String bdId;
 
-    private String bdLoc;
+    private String bdUnit;
 
     private String phone;
 
@@ -36,3 +36,4 @@ public class VisitVehicle extends BaseEntity {
 
 
 }
+
