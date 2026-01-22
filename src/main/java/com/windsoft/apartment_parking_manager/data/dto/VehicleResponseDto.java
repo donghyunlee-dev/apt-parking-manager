@@ -1,5 +1,6 @@
 package com.windsoft.apartment_parking_manager.data.dto;
 
+import com.windsoft.apartment_parking_manager.type.VehicleType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,5 +12,5 @@ public class VehicleResponseDto {
 
     private String info;
 
-    private String status;
+    private VehicleType status;
 }
