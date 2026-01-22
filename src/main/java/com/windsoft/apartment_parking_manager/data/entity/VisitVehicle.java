@@ -25,7 +25,7 @@ public class VisitVehicle extends BaseEntity {
     private String bdUnit;
 
     private String phone;
-
+    @Id
     private LocalDate visitDate;
 
     private LocalTime visitTime;
@@ -34,6 +34,20 @@ public class VisitVehicle extends BaseEntity {
 
     private String memo;
 
+    public String getInfo() {
+        StringBuilder sb = new StringBuilder();
 
+        sb.append(bdId);
+        sb.append(" ");
+        sb.append(bdUnit);
+        sb.append("\t");
+        sb.append(visitDate);
+        sb.append("~");
+        sb.append(visitCloseDate);
+        sb.append("\t");
+        sb.append(phone);
+        sb.append("\t");
+        sb.append(memo);
+        return sb.toString();
+    }
 }
-
