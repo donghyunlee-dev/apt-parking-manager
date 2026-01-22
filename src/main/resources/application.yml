@@ -20,6 +20,10 @@ spring:
       connection-timeout: 3000
       idle-timeout: 30000
       max-lifetime: 240000
+      data-source-properties:
+        cachePrepStmts: false
+        prepStmtCacheSize: 0
+        prepStmtCacheSqlLimit: 0
 
   jpa:
     properties:
