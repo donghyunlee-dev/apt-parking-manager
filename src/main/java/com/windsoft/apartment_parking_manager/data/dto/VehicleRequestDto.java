@@ -14,7 +14,7 @@ public class VehicleRequestDto {
 
         public ParkingRequest(RequestContext context, final String vehicleNo) {
             super(context);
-            this.vehicleNo = vehicleNo;
+            this.vehicleNo = vehicleNo.replace(" ", "");
         }
     }
 
