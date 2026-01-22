@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@SequenceGenerator(
+    name = "parking_vehicle_seq",
+    sequenceName = "parking_vehicle_seq",
+    allocationSize = 1
+)
 @EqualsAndHashCode
 @Getter
 @AllArgsConstructor
@@ -20,13 +25,8 @@ public class ParkingVehicleId implements Serializable {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "parking_vehicle_seq"
-    )
-    @SequenceGenerator(
-            name = "parking_vehicle_seq",
-            sequenceName = "parking_vehicle_seq",
-            allocationSize = 1
+        strategy = GenerationType.SEQUENCE,
+        generator = "parking_vehicle_seq"
     )
     private long seqNo;
 }

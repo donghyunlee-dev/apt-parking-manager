@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @SequenceGenerator(
-        name = "access_log_seq",
-        sequenceName = "access_log_seq",
-        allocationSize = 1
+    name = "access_log_seq",
+    sequenceName = "access_log_seq",
+    allocationSize = 1
 )
 @EqualsAndHashCode
 @Getter
@@ -26,9 +26,8 @@ public class AccessLogId implements Serializable {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "access_log_seq"
+        strategy = GenerationType.SEQUENCE,
+        generator = "access_log_seq"
     )
-
     private long logNo;
 }
