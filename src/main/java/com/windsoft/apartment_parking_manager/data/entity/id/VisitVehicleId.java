@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @EqualsAndHashCode
 @Getter
 @AllArgsConstructor
@@ -12,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class VisitVehicleId {
     private String aptCode;
     private String vehicleNo;
+    private LocalDate visitDate;
 }
