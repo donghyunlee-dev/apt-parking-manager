@@ -26,7 +26,7 @@ public class RequestContextArgumentResolver implements HandlerMethodArgumentReso
     @Override
     public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
         String aptCode = webRequest.getHeader(HEADER_APARTMENT_CODE);
-        String boucode = webRequest.getHeader(HEADER_BOUNCER_CODE);
+        String bouncerCode = webRequest.getHeader(HEADER_BOUNCER_CODE);
         String deviceId = webRequest.getHeader(HEADER_DEVICE_ID);
         String appVersion = webRequest.getHeader(HEADER_APP_VERSION);
 
@@ -34,7 +34,7 @@ public class RequestContextArgumentResolver implements HandlerMethodArgumentReso
             throw new MissingRequestHeaderException(HEADER_APARTMENT_CODE, parameter);
         }
 
-        if (!StringUtils.hasText(boucode)) {
+        if (!StringUtils.hasText(bouncerCode)) {
             throw new MissingRequestHeaderException(HEADER_BOUNCER_CODE, parameter);
         }
 
@@ -49,3 +49,4 @@ public class RequestContextArgumentResolver implements HandlerMethodArgumentReso
         return new RequestContext(aptCode, boucode, deviceId, appVersion);
     }
 }
+
