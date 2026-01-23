@@ -1,6 +1,6 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
-import com.windsoft.apartment_parking_manager.data.entity.id.Noticeid;
+import com.windsoft.apartment_parking_manager.data.entity.id.NoticeId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@IdClass(Noticeid.class)
+@IdClass(NoticeId.class)
 @Table
 @Entity
 public class Notice extends BaseEntity {
