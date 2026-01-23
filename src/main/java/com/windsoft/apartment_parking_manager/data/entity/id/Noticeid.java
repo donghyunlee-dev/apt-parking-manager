@@ -20,7 +20,7 @@ import java.security.SecureRandomParameters;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Noticeid implements SecureRandomParameters {
+public class NoticeId implements SecureRandomParameters {
 
     private static final long serialVersionUID = 1L;
 
