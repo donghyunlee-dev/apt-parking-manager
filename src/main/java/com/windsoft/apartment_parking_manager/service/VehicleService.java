@@ -14,4 +14,6 @@ public interface VehicleService {
     VehicleResponseDto.ResidentVehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ResidentModificationRequest request);
 
     VehicleResponseDto.ResidentVehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request);
+
+    void deleteResidentVehicle(VehicleRequestDto.VehiclePlateRequest request);
 }
