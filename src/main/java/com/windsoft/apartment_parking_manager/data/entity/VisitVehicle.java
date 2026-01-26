@@ -1,10 +1,8 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
 import com.windsoft.apartment_parking_manager.data.entity.id.VisitVehicleId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -24,6 +22,7 @@ public class VisitVehicle extends BaseEntity {
 
     private String bdUnit;
 
+    @Convert(converter = AES256GcmConverter.class)
     private String phone;
     @Id
     private LocalDate visitDate;

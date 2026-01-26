@@ -1,10 +1,8 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
 import com.windsoft.apartment_parking_manager.data.entity.id.ResidentVehicleId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -14,6 +12,7 @@ import lombok.Getter;
 public class ResidentVehicle extends BaseEntity {
     @Id
     private String aptCode;
+
     @Id
     private String vehicleNo;
 
@@ -21,6 +20,7 @@ public class ResidentVehicle extends BaseEntity {
 
     private String bdUnit;
 
+    @Convert(converter = AES256GcmConverter.class)
     private String phone;
 
     private boolean used;

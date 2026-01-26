@@ -4,6 +4,7 @@ import com.windsoft.apartment_parking_manager.data.dto.RequestContextDto;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
 import com.windsoft.apartment_parking_manager.data.entity.id.ParkingVehicleId;
 import com.windsoft.apartment_parking_manager.type.VehicleType;
+import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +28,7 @@ public class ParkingVehicle {
     private String bouncerCode;
 
     private String vehicleNo;
+
     @Enumerated(EnumType.STRING)
     private VehicleType type;
 
