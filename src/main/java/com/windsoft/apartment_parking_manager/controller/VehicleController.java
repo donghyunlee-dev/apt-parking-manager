@@ -3,6 +3,7 @@ package com.windsoft.apartment_parking_manager.controller;
 import com.windsoft.apartment_parking_manager.data.dto.RequestContext;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleRequestDto;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
+import com.windsoft.apartment_parking_manager.data.entity.ParkingVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.ResidentVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.VisitVehicle;
 import com.windsoft.apartment_parking_manager.service.VehicleService;
@@ -19,11 +20,12 @@ public class VehicleController {
 
     @GetMapping("/parking")
     public ResponseEntity<VehicleResponseDto> retrieveParkingVehicle(RequestContext context, @RequestParam String vehicleNo) {
-        VehicleResponseDto vehicleInfo = vehicleService.findParkingVehicle(new VehicleRequestDto.ParkingRequest(context, vehicleNo));
 
-        if (vehicleInfo == null) {
-            return ResponseEntity.notFound().build();
-        }
+        VehicleRequestDto.ParkingRequest parkingRequest = new VehicleRequestDto.ParkingRequest(context, vehicleNo);
+
+        VehicleResponseDto vehicleInfo = vehicleService.findParkingVehicle(parkingRequest);
+        ParkingVehicle parkingVehicle = vehicleService.saveParkingVehicle(parkingRequest, vehicleInfo);
+
         return ResponseEntity.ok(vehicleInfo);
     }
 
