@@ -99,6 +99,11 @@ public class VehicleServiceImpl implements VehicleService {
         return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
     }
 
+    @Override
+    public void deleteResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
+        residentVehicleRepository.deleteById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+    }
+
     private ResidentVehicle findResidentVehicle(ResidentVehicleId id) {
         return residentVehicleRepository.findById(id).orElse(null);
     }
