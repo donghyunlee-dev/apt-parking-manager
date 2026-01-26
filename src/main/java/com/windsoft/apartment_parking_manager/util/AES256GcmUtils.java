@@ -19,7 +19,7 @@ public final class AES256GcmUtils {
         throw new UnsupportedOperationException("Utility Class");
     }
 
-    private static final String SECRET_KEY = "APARTMERT_PARKING_MANAGER";
+    private static final String SECRET_KEY = "bmY7EltZz350hXtLRCEckrF2bJFbrnC1I3Wd/JTHgeo=";
     private static final String AES_ALG = "AES/GCM/NoPadding";
     private static final String ALGORITHM = "AES";
     private static final Charset ENCODING_TYPE = StandardCharsets.UTF_8;

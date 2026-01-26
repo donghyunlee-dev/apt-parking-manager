@@ -8,14 +8,49 @@ import lombok.Getter;
 public class VehicleRequestDto {
 
     @Getter
-    public static class ParkingRequest extends RequestContextDto {
+    public static class VehiclePlateRequest extends RequestContextDto {
 
         private String vehicleNo;
 
-        public ParkingRequest(RequestContext context, final String vehicleNo) {
-            super(context);
+        public VehiclePlateRequest(final String vehicleNo) {
             this.vehicleNo = vehicleNo.replace(" ", "");
         }
     }
 
+
+    @Getter
+    public static class ResidentRegistrationRequest extends RequestContextDto {
+        private String vehicleNo;
+        private String bdId;
+        private String bdUnit;
+        private String phone;
+
+        @Override
+        public String toString() {
+            return "ResidentRegistrationRequest{" +
+                    "bdUnit='" + bdUnit + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", bdId='" + bdId + '\'' +
+                    ", vehicleNo='" + vehicleNo + '\'' +
+                    "}, " +
+                    super.toString();
+        }
+    }
+
+    @Getter
+    public static class ResidentModificationRequest extends RequestContextDto {
+        private String bdId;
+        private String bdUnit;
+        private String phone;
+
+        @Override
+        public String toString() {
+            return "ResidentRegistrationRequest{" +
+                    "bdUnit='" + bdUnit + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", bdId='" + bdId + '\'' +
+                    "}, " +
+                    super.toString();
+        }
+    }
 }

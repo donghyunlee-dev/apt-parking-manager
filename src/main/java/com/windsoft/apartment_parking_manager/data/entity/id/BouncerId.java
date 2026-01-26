@@ -1,6 +1,5 @@
 package com.windsoft.apartment_parking_manager.data.entity.id;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

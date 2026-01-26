@@ -4,7 +4,6 @@ import com.windsoft.apartment_parking_manager.data.dto.RequestContextDto;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
 import com.windsoft.apartment_parking_manager.data.entity.id.ParkingVehicleId;
 import com.windsoft.apartment_parking_manager.type.VehicleType;
-import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -47,13 +46,13 @@ public class ParkingVehicle {
                 .toLocalDateTime();
     }
 
-    public static ParkingVehicle setData(RequestContextDto context, VehicleResponseDto info) {
+    public static ParkingVehicle setData(RequestContextDto context, VehicleResponseDto.ParkingInfo info) {
         ParkingVehicle vehicle = new ParkingVehicle();
         vehicle.aptCode = context.getAptCode();
         vehicle.bouncerCode = context.getBouncerCode();
         vehicle.deviceId = context.getDeviceId();
         vehicle.appVersion = context.getAppVersion();
-        vehicle.vehicleNo = info.getVehicleNo();
+        vehicle.vehicleNo = info.getVehicleNo().replace(" ", "");
         vehicle.type = info.getStatus();
         return vehicle;
     }

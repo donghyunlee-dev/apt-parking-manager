@@ -12,9 +12,9 @@ import com.windsoft.apartment_parking_manager.data.repository.ResidentVehicleRep
 import com.windsoft.apartment_parking_manager.data.repository.VisitVehicleRepository;
 import com.windsoft.apartment_parking_manager.service.VehicleService;
 import com.windsoft.apartment_parking_manager.type.VehicleType;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
@@ -27,13 +27,14 @@ public class VehicleServiceImpl implements VehicleService {
     private final VisitVehicleRepository visitVehicleRepository;
     private final ParkingVehicleRepository parkingVehicleRepository;
 
+    @Transactional(readOnly = true)
     @Override
-    public VehicleResponseDto findParkingVehicle(VehicleRequestDto.ParkingRequest request) {
+    public VehicleResponseDto.ParkingInfo findParkingVehicle(VehicleRequestDto.VehiclePlateRequest request) {
 
         ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
 
         if (!ObjectUtils.isEmpty(residentVehicle)) {
-            return VehicleResponseDto.builder()
+            return VehicleResponseDto.ParkingInfo.builder()
                     .vehicleNo(residentVehicle.getVehicleNo())
                     .info(residentVehicle.getInfo())
                     .status(VehicleType.RESIDENT)
@@ -43,14 +44,14 @@ public class VehicleServiceImpl implements VehicleService {
         VisitVehicle visitVehicle = findVisitVehicle(new VisitVehicleId(request.getAptCode(), request.getVehicleNo(), LocalDate.now()));
 
         if (!ObjectUtils.isEmpty(visitVehicle)) {
-            return VehicleResponseDto.builder()
+            return VehicleResponseDto.ParkingInfo.builder()
                     .vehicleNo(visitVehicle.getVehicleNo())
                     .info(visitVehicle.getInfo())
                     .status(VehicleType.VISIT)
                     .build();
         }
 
-        return VehicleResponseDto.builder()
+        return VehicleResponseDto.ParkingInfo.builder()
                 .vehicleNo(request.getVehicleNo())
                 .info("미등록 차량")
                 .status(VehicleType.ILLEGAL)
@@ -59,8 +60,43 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Transactional
     @Override
-    public ParkingVehicle saveParkingVehicle(VehicleRequestDto.ParkingRequest request, VehicleResponseDto vehicleInfo) {
-        return parkingVehicleRepository.save(ParkingVehicle.setData(request, vehicleInfo));
+    public void saveParkingVehicleLog(VehicleRequestDto.VehiclePlateRequest request, VehicleResponseDto.ParkingInfo vehicleInfo) {
+        parkingVehicleRepository.save(ParkingVehicle.setData(request, vehicleInfo));
+    }
+
+    @Transactional
+    @Override
+    public VehicleResponseDto.ResidentVehicleInfo saveResidentVehicle(VehicleRequestDto.ResidentRegistrationRequest request) {
+
+        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+
+        if (residentVehicle != null) {
+            return null;
+        }
+
+        ResidentVehicle savedResidentVehicle = residentVehicleRepository.save(ResidentVehicle.setData(request));
+        return VehicleResponseDto.ResidentVehicleInfo.setData(savedResidentVehicle);
+    }
+
+    @Transactional
+    @Override
+    public VehicleResponseDto.ResidentVehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ResidentModificationRequest request) {
+
+        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), vehicleNo));
+
+        residentVehicle.update(request);
+
+        return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
+    }
+
+    @Transactional
+    @Override
+    public VehicleResponseDto.ResidentVehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
+
+        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+        residentVehicle.switchUsage();
+
+        return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
     }
 
     private ResidentVehicle findResidentVehicle(ResidentVehicleId id) {

@@ -5,4 +5,14 @@ public record RequestContext(
     String bouncerCode,
     String deviceId,
     String appVersion
-) {}
+) {
+    @Override
+    public String toString() {
+        return "RequestContext{" +
+                "aptCode='" + aptCode + '\'' +
+                ", bouncerCode='" + bouncerCode + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                '}';
+    }
+}

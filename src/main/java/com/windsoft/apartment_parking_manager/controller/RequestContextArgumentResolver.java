@@ -49,5 +49,3 @@ public class RequestContextArgumentResolver implements HandlerMethodArgumentReso
         return new RequestContext(aptCode, bouncerCode, deviceId, appVersion);
     }
 }
-
-

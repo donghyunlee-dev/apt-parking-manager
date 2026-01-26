@@ -2,11 +2,16 @@ package com.windsoft.apartment_parking_manager.service;
 
 import com.windsoft.apartment_parking_manager.data.dto.VehicleRequestDto;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
-import com.windsoft.apartment_parking_manager.data.entity.ParkingVehicle;
 
 public interface VehicleService {
 
-    VehicleResponseDto findParkingVehicle(VehicleRequestDto.ParkingRequest request);
+    VehicleResponseDto.ParkingInfo findParkingVehicle(VehicleRequestDto.VehiclePlateRequest request);
 
-    ParkingVehicle saveParkingVehicle(VehicleRequestDto.ParkingRequest request, VehicleResponseDto vehicleInfo);
+    void saveParkingVehicleLog(VehicleRequestDto.VehiclePlateRequest request, VehicleResponseDto.ParkingInfo vehicleInfo);
+
+    VehicleResponseDto.ResidentVehicleInfo saveResidentVehicle(VehicleRequestDto.ResidentRegistrationRequest request);
+
+    VehicleResponseDto.ResidentVehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ResidentModificationRequest request);
+
+    VehicleResponseDto.ResidentVehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request);
 }

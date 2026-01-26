@@ -1,5 +1,6 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
+import com.windsoft.apartment_parking_manager.data.dto.VehicleRequestDto;
 import com.windsoft.apartment_parking_manager.data.entity.id.ResidentVehicleId;
 import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
 import jakarta.persistence.*;
@@ -31,5 +32,28 @@ public class ResidentVehicle extends BaseEntity {
         sb.append(" ");
         sb.append(bdUnit);
         return sb.toString();
+    }
+
+    public void update(VehicleRequestDto.ResidentModificationRequest vehicleInfo) {
+        this.bdId = vehicleInfo.getBdId();
+        this.bdUnit = vehicleInfo.getBdUnit();
+        this.phone = vehicleInfo.getPhone();
+        this.updatedId = vehicleInfo.getBouncerCode();
+    }
+
+    public void switchUsage() {
+        this.used = !this.used;
+    }
+
+    public static ResidentVehicle setData(VehicleRequestDto.ResidentRegistrationRequest registrationVehicle) {
+        ResidentVehicle residentVehicle = new ResidentVehicle();
+        residentVehicle.aptCode = registrationVehicle.getAptCode();
+        residentVehicle.vehicleNo = registrationVehicle.getVehicleNo();
+        residentVehicle.bdId = registrationVehicle.getBdId();
+        residentVehicle.bdUnit = registrationVehicle.getBdUnit();
+        residentVehicle.phone = registrationVehicle.getPhone();
+        residentVehicle.used = true;
+        residentVehicle.createdId = registrationVehicle.getBouncerCode();
+        return residentVehicle;
     }
 }

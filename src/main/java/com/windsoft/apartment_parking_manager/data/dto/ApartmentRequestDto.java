@@ -7,7 +7,7 @@ public class ApartmentRequestDto {
 
     @AllArgsConstructor
     @Getter
-    public static class verify {
+    public class verify {
         private String address;
     }
 }

@@ -1,7 +1,11 @@
 package com.windsoft.apartment_parking_manager.data.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
+@NoArgsConstructor
 @Getter
 public class RequestContextDto {
     private String aptCode;
@@ -9,7 +13,7 @@ public class RequestContextDto {
     private String deviceId;
     private String appVersion;
 
-    public RequestContextDto(RequestContext context) {
+    public void setContext(RequestContext context) {
         aptCode = context.aptCode();
         bouncerCode = context.bouncerCode();
         deviceId = context.deviceId();
