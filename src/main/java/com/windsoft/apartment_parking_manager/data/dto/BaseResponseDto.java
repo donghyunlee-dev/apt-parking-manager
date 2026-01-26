@@ -19,6 +19,11 @@ public class BaseResponseDto<T> {
         this.message = "정상적으로 처리되었습니다.";
     }
 
+    public BaseResponseDto(final String message) {
+        this.payload = null;
+        this.message = message;
+    }
+
     public BaseResponseDto(final T paylaod, final String message) {
         this.payload = paylaod;
         this.message = message;
