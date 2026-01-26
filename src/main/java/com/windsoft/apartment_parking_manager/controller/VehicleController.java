@@ -4,6 +4,7 @@ import com.windsoft.apartment_parking_manager.data.dto.BaseResponseDto;
 import com.windsoft.apartment_parking_manager.data.dto.RequestContext;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleRequestDto;
 import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
+import com.windsoft.apartment_parking_manager.data.entity.ResidentVehicle;
 import com.windsoft.apartment_parking_manager.service.VehicleService;
 import com.windsoft.apartment_parking_manager.type.HttpType;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,14 @@ public class VehicleController {
         vehiclePlateRequest.setContext(context);
         VehicleResponseDto.ResidentVehicleInfo residentVehicle = vehicleService.changeUsageResidentVehicle(vehiclePlateRequest);
         return new ResponseEntity<>(new BaseResponseDto(residentVehicle), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{vehicle_no}")
+    public ResponseEntity<BaseResponseDto<?>> removeResidentVehicle(RequestContext context, final @RequestParam(name = "vehicle_no") String vehicleNo) {
+        VehicleRequestDto.VehiclePlateRequest vehiclePlateRequest = new VehicleRequestDto.VehiclePlateRequest(vehicleNo);
+        vehiclePlateRequest.setContext(context);
+        vehicleService.deleteResidentVehicle(vehiclePlateRequest);
+        return new ResponseEntity<>(new BaseResponseDto("삭제되었습니다."), HttpStatus.OK);
     }
 
     @PostMapping("/visit")
