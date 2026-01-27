@@ -31,7 +31,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto.ParkingInfo findParkingVehicle(VehicleRequestDto.VehiclePlateRequest request) {
 
-        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElse(null);
 
         if (!ObjectUtils.isEmpty(residentVehicle)) {
             return VehicleResponseDto.ParkingInfo.builder()
@@ -41,7 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
                     .build();
         }
 
-        VisitVehicle visitVehicle = findVisitVehicle(new VisitVehicleId(request.getAptCode(), request.getVehicleNo(), LocalDate.now()));
+        VisitVehicle visitVehicle = visitVehicleRepository.findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(request.getAptCode(), request.getVehicleNo(), LocalDate.now(), LocalDate.now()).orElse(null);
 
         if (!ObjectUtils.isEmpty(visitVehicle)) {
             return VehicleResponseDto.ParkingInfo.builder()
@@ -68,7 +68,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto.ResidentVehicleInfo saveResidentVehicle(VehicleRequestDto.ResidentRegistrationRequest request) {
 
-        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElse(null);
 
         if (residentVehicle != null) {
             return null;
@@ -82,7 +82,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto.ResidentVehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ResidentModificationRequest request) {
 
-        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), vehicleNo));
+        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), vehicleNo)).orElseThrow(() -> new IllegalArgumentException("Resident vehicle not found"));
 
         residentVehicle.update(request);
 
@@ -93,7 +93,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto.ResidentVehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
 
-        ResidentVehicle residentVehicle = findResidentVehicle(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElseThrow(() -> new IllegalArgumentException("Resident vehicle not found"));
         residentVehicle.switchUsage();
 
         return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
@@ -102,19 +102,5 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void deleteResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
         residentVehicleRepository.deleteById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
-    }
-
-    private ResidentVehicle findResidentVehicle(ResidentVehicleId id) {
-        return residentVehicleRepository.findById(id).orElse(null);
-    }
-
-    private VisitVehicle findVisitVehicle(VisitVehicleId id) {
-        return visitVehicleRepository.findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(
-                id.getAptCode(),
-                id.getVehicleNo(),
-                id.getVisitDate(),
-                id.getVisitDate()
-
-        ).orElse(null);
     }
 }

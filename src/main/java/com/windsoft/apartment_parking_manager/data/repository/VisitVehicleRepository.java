@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface VisitVehicleRepository extends JpaRepository<VisitVehicle, VisitVehicleId> {
     Optional<VisitVehicle> findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(String aptCode, String vehicleNo, LocalDate from, LocalDate to);
+    Optional<VisitVehicle> findByAptCodeAndVehicleNo(String aptCode, String vehicleNo);
 }
