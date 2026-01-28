@@ -18,7 +18,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @GetMapping("/parking")
-    public ResponseEntity<VehicleResponseDto.ParkingInfo> retrieveParkingVehicle(RequestContext context, @RequestParam String vehicleNo) {
+    public ResponseEntity<VehicleResponseDto.ParkingInfo> retrieveParkingVehicle(RequestContext context, @RequestParam(name = "vehicle_no") String vehicleNo) {
 
         VehicleRequestDto.VehiclePlateRequest vehiclePlateRequest = new VehicleRequestDto.VehiclePlateRequest(vehicleNo);
         vehiclePlateRequest.setContext(context);
