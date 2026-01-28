@@ -37,5 +37,10 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    # org.hibernate.type.descriptor.sql: trace
+    root: info
+    org:
+      springframework:
+        web: debug
+    com:
+      windsoft:
+        apartment_parking_manager: debug
