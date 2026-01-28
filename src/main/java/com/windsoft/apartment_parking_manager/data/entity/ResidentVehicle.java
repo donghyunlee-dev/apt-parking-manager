@@ -34,7 +34,7 @@ public class ResidentVehicle extends BaseEntity {
         return sb.toString();
     }
 
-    public void update(VehicleRequestDto.ResidentModificationRequest vehicleInfo) {
+    public void update(VehicleRequestDto.ModificationRequest vehicleInfo) {
         this.bdId = vehicleInfo.getBdId();
         this.bdUnit = vehicleInfo.getBdUnit();
         this.phone = vehicleInfo.getPhone();
@@ -45,7 +45,7 @@ public class ResidentVehicle extends BaseEntity {
         this.used = !this.used;
     }
 
-    public static ResidentVehicle setData(VehicleRequestDto.ResidentRegistrationRequest registrationVehicle) {
+    public static ResidentVehicle setData(VehicleRequestDto.RegistrationRequest registrationVehicle) {
         ResidentVehicle residentVehicle = new ResidentVehicle();
         residentVehicle.aptCode = registrationVehicle.getAptCode();
         residentVehicle.vehicleNo = registrationVehicle.getVehicleNo();

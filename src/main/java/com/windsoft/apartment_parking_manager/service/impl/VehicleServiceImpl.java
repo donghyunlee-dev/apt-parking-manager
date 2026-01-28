@@ -1,15 +1,14 @@
 package com.windsoft.apartment_parking_manager.service.impl;
 
-import com.windsoft.apartment_parking_manager.data.dto.VehicleRequestDto;
-import com.windsoft.apartment_parking_manager.data.dto.VehicleResponseDto;
+import com.windsoft.apartment_parking_manager.data.dto.*;
 import com.windsoft.apartment_parking_manager.data.entity.ParkingVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.ResidentVehicle;
-import com.windsoft.apartment_parking_manager.data.entity.VisitVehicle;
+import com.windsoft.apartment_parking_manager.data.entity.VisitorVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.id.ResidentVehicleId;
-import com.windsoft.apartment_parking_manager.data.entity.id.VisitVehicleId;
+import com.windsoft.apartment_parking_manager.data.entity.id.VisitorVehicleId;
 import com.windsoft.apartment_parking_manager.data.repository.ParkingVehicleRepository;
 import com.windsoft.apartment_parking_manager.data.repository.ResidentVehicleRepository;
-import com.windsoft.apartment_parking_manager.data.repository.VisitVehicleRepository;
+import com.windsoft.apartment_parking_manager.data.repository.VisitorVehicleRepository;
 import com.windsoft.apartment_parking_manager.service.VehicleService;
 import com.windsoft.apartment_parking_manager.type.VehicleType;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class VehicleServiceImpl implements VehicleService {
 
     private final ResidentVehicleRepository residentVehicleRepository;
-    private final VisitVehicleRepository visitVehicleRepository;
+    private final VisitorVehicleRepository visitorVehicleRepository;
     private final ParkingVehicleRepository parkingVehicleRepository;
 
     @Transactional(readOnly = true)
@@ -41,12 +42,12 @@ public class VehicleServiceImpl implements VehicleService {
                     .build();
         }
 
-        VisitVehicle visitVehicle = visitVehicleRepository.findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(request.getAptCode(), request.getVehicleNo(), LocalDate.now(), LocalDate.now()).orElse(null);
+        VisitorVehicle visitorVehicle = visitorVehicleRepository.findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(request.getAptCode(), request.getVehicleNo(), LocalDate.now(), LocalDate.now()).orElse(null);
 
-        if (!ObjectUtils.isEmpty(visitVehicle)) {
+        if (!ObjectUtils.isEmpty(visitorVehicle)) {
             return VehicleResponseDto.ParkingInfo.builder()
-                    .vehicleNo(visitVehicle.getVehicleNo())
-                    .info(visitVehicle.getInfo())
+                    .vehicleNo(visitorVehicle.getVehicleNo())
+                    .info(visitorVehicle.getInfo())
                     .status(VehicleType.VISIT)
                     .build();
         }
@@ -66,7 +67,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Transactional
     @Override
-    public VehicleResponseDto.ResidentVehicleInfo saveResidentVehicle(VehicleRequestDto.ResidentRegistrationRequest request) {
+    public VehicleResponseDto.VehicleInfo saveResidentVehicle(VehicleRequestDto.RegistrationRequest request) {
 
         ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElse(null);
 
@@ -75,32 +76,63 @@ public class VehicleServiceImpl implements VehicleService {
         }
 
         ResidentVehicle savedResidentVehicle = residentVehicleRepository.save(ResidentVehicle.setData(request));
-        return VehicleResponseDto.ResidentVehicleInfo.setData(savedResidentVehicle);
+        return VehicleResponseDto.VehicleInfo.setData(savedResidentVehicle);
     }
 
     @Transactional
     @Override
-    public VehicleResponseDto.ResidentVehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ResidentModificationRequest request) {
+    public VehicleResponseDto.VehicleInfo updateResidentVehicle(String vehicleNo, VehicleRequestDto.ModificationRequest request) {
 
-        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), vehicleNo)).orElseThrow(() -> new IllegalArgumentException("Resident vehicle not found"));
+        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), vehicleNo)).orElseThrow(() -> new NoSuchElementException("Resident vehicle not found"));
 
         residentVehicle.update(request);
 
-        return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
+        return VehicleResponseDto.VehicleInfo.setData(residentVehicle);
     }
 
     @Transactional
     @Override
-    public VehicleResponseDto.ResidentVehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
+    public VehicleResponseDto.VehicleInfo changeUsageResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
 
         ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElseThrow(() -> new IllegalArgumentException("Resident vehicle not found"));
         residentVehicle.switchUsage();
 
-        return VehicleResponseDto.ResidentVehicleInfo.setData(residentVehicle);
+        return VehicleResponseDto.VehicleInfo.setData(residentVehicle);
     }
 
     @Override
     public void deleteResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
         residentVehicleRepository.deleteById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
+    }
+
+    @Transactional
+    @Override
+    public VisitorVehicleResponseDto.VisitorVehicleInfo saveVisitVehicle(VisitorVehicleRequestDto.RegistrationRequest registrationRequest) {
+
+        Optional<VisitorVehicle> registeredVehicle = visitorVehicleRepository
+                .findById(new VisitorVehicleId(registrationRequest.getAptCode(), registrationRequest.getVehicleNo(), registrationRequest.getVisitDate()));
+
+        if (registeredVehicle.isPresent()) {
+            return null;
+        }
+
+        VisitorVehicle savedVehicle = visitorVehicleRepository.save(VisitorVehicle.setData(registrationRequest));
+        return VisitorVehicleResponseDto.VisitorVehicleInfo.setData(savedVehicle);
+    }
+
+    @Transactional
+    @Override
+    public VisitorVehicleResponseDto.VisitorVehicleInfo updateVisitVehicle(String vehicleNo, VisitorVehicleRequestDto.ModificationRequest modificationRequest) {
+        VisitorVehicle visitorVehicle = visitorVehicleRepository.findById(new VisitorVehicleId(modificationRequest.getAptCode(), vehicleNo, modificationRequest.getVisitDate()))
+                .orElseThrow(() -> new NoSuchElementException("Visitor vehicle not found"));
+
+        visitorVehicle.update(modificationRequest);
+        return VisitorVehicleResponseDto.VisitorVehicleInfo.setData(visitorVehicle);
+    }
+
+    @Transactional
+    @Override
+    public void deleteVisitorVehicle(RequestContext context, String vehicleNo, LocalDate visitDate) {
+        visitorVehicleRepository.deleteById(new VisitorVehicleId(context.aptCode(), vehicleNo, visitDate));
     }
 }

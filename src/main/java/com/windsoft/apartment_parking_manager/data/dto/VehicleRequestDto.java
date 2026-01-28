@@ -19,7 +19,7 @@ public class VehicleRequestDto {
 
 
     @Getter
-    public static class ResidentRegistrationRequest extends RequestContextDto {
+    public static class RegistrationRequest extends RequestContextDto {
         private String vehicleNo;
         private String bdId;
         private String bdUnit;
@@ -38,7 +38,7 @@ public class VehicleRequestDto {
     }
 
     @Getter
-    public static class ResidentModificationRequest extends RequestContextDto {
+    public static class ModificationRequest extends RequestContextDto {
         private String bdId;
         private String bdUnit;
         private String phone;
