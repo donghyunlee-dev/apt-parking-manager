@@ -24,6 +24,8 @@ public class ResidentVehicle extends BaseEntity {
     @Convert(converter = AES256GcmConverter.class)
     private String phone;
 
+    private String memo;
+
     private boolean used;
 
     public String getInfo() {
@@ -38,6 +40,7 @@ public class ResidentVehicle extends BaseEntity {
         this.bdId = vehicleInfo.getBdId();
         this.bdUnit = vehicleInfo.getBdUnit();
         this.phone = vehicleInfo.getPhone();
+        this.memo = vehicleInfo.getMemo();
         this.updatedId = vehicleInfo.getBouncerCode();
     }
 
@@ -52,6 +55,7 @@ public class ResidentVehicle extends BaseEntity {
         residentVehicle.bdId = registrationVehicle.getBdId();
         residentVehicle.bdUnit = registrationVehicle.getBdUnit();
         residentVehicle.phone = registrationVehicle.getPhone();
+        residentVehicle.memo = registrationVehicle.getMemo();
         residentVehicle.used = true;
         residentVehicle.createdId = registrationVehicle.getBouncerCode();
         return residentVehicle;
