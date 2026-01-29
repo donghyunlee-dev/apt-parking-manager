@@ -1,11 +1,15 @@
 package com.windsoft.apartment_parking_manager.controller;
 
+import com.windsoft.apartment_parking_manager.annotation.SnakCaseModelAttribute;
 import com.windsoft.apartment_parking_manager.data.dto.*;
 import com.windsoft.apartment_parking_manager.service.VehicleService;
 import com.windsoft.apartment_parking_manager.type.HttpType;
+import com.windsoft.apartment_parking_manager.type.VehicleType;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -101,13 +105,28 @@ public class VehicleController {
         return new ResponseEntity<>(new BaseResponseDto("삭제되었습니다."), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> retrieveVehicles(RequestContext context, final Integer vehicleId) {
-        return ResponseEntity.ok(vehicleId);
+    @GetMapping("/{vehicle_no}")
+    public ResponseEntity<?> findVehicle(RequestContext context, @PathVariable(name = "vehicle_no") VehicleRequestDto.VehiclePlateRequest request) {
+        request.setContext(context);
+        System.out.println(request);
+        VehicleResponseDto.VehicleInfo vehicle = vehicleService.getVehicle(request);
+
+        return ResponseEntity.ok(new BaseResponseDto<>(vehicle, (ObjectUtils.isEmpty(vehicle.getVehicleNo()) ? "0건" : "1건") + "이 검색되었습니다."));
     }
 
-    @GetMapping("/{vehicleNo}")
-    public ResponseEntity<?> retrieveVehicleById(final String vehicleNo) {
+    @GetMapping
+    public ResponseEntity<?> retrieveVehicles(RequestContext context, @SnakCaseModelAttribute VehicleRequestDto.SearchCondition condition) {
+        /**
+         * 검색 조건 - VehicleType, Period, Vehicle No
+         */
+        condition.setContext(context);
+        System.out.println(condition);
+
+        return ResponseEntity.ok(condition);
+    }
+
+    @GetMapping("/{vehicleNo}/{type}")
+    public ResponseEntity<?> retrieveVehicleById(final String vehicleNo, final VehicleType type) {
         return ResponseEntity.ok(vehicleNo);
     }
 }
