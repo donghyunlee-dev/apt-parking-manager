@@ -75,4 +75,12 @@ public interface VehicleService {
      * @param visitDate 방문 일자
      */
     void deleteVisitorVehicle(RequestContext context, String vehicleNo, LocalDate visitDate);
+
+    /**
+     * 차량 정보 조회
+     * 차량 번호로 입주민, 방문, 미등록 차량 정보 검색
+     * @param request
+     * @return
+     */
+    VehicleResponseDto.VehicleInfo getVehicle(VehicleRequestDto.VehiclePlateRequest request);
 }
