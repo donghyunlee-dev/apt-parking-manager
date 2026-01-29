@@ -4,6 +4,7 @@ import com.windsoft.apartment_parking_manager.data.dto.*;
 import com.windsoft.apartment_parking_manager.data.entity.ParkingVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.ResidentVehicle;
 import com.windsoft.apartment_parking_manager.data.entity.VisitorVehicle;
+import com.windsoft.apartment_parking_manager.data.entity.id.ParkingVehicleId;
 import com.windsoft.apartment_parking_manager.data.entity.id.ResidentVehicleId;
 import com.windsoft.apartment_parking_manager.data.entity.id.VisitorVehicleId;
 import com.windsoft.apartment_parking_manager.data.repository.ParkingVehicleRepository;
@@ -14,9 +15,11 @@ import com.windsoft.apartment_parking_manager.type.VehicleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,7 +35,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto.ParkingInfo findParkingVehicle(VehicleRequestDto.VehiclePlateRequest request) {
 
-        ResidentVehicle residentVehicle = residentVehicleRepository.findById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo())).orElse(null);
+        ResidentVehicle residentVehicle = getResidentVehicle(request.getAptCode(), request.getVehicleNo());
 
         if (!ObjectUtils.isEmpty(residentVehicle)) {
             return VehicleResponseDto.ParkingInfo.builder()
@@ -48,7 +51,7 @@ public class VehicleServiceImpl implements VehicleService {
             return VehicleResponseDto.ParkingInfo.builder()
                     .vehicleNo(visitorVehicle.getVehicleNo())
                     .info(visitorVehicle.getInfo())
-                    .status(VehicleType.VISIT)
+                    .status(VehicleType.VISITOR)
                     .build();
         }
 
@@ -100,6 +103,7 @@ public class VehicleServiceImpl implements VehicleService {
         return VehicleResponseDto.VehicleInfo.setData(residentVehicle);
     }
 
+    @Transactional
     @Override
     public void deleteResidentVehicle(VehicleRequestDto.VehiclePlateRequest request) {
         residentVehicleRepository.deleteById(new ResidentVehicleId(request.getAptCode(), request.getVehicleNo()));
@@ -134,5 +138,54 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void deleteVisitorVehicle(RequestContext context, String vehicleNo, LocalDate visitDate) {
         visitorVehicleRepository.deleteById(new VisitorVehicleId(context.aptCode(), vehicleNo, visitDate));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public VehicleResponseDto.VehicleInfo getVehicle(VehicleRequestDto.VehiclePlateRequest request) {
+
+        ResidentVehicle residentVehicle = getResidentVehicle(request.getAptCode(), request.getVehicleNo());
+
+        if (!ObjectUtils.isEmpty(residentVehicle)) {
+            return VehicleResponseDto.VehicleInfo.setData(residentVehicle);
+        }
+
+        VisitorVehicle visitorVehicle = getVisitorVehicle(request.getAptCode(), request.getVehicleNo());
+
+        if (!ObjectUtils.isEmpty(visitorVehicle)) {
+            return VehicleResponseDto.VehicleInfo.setData(visitorVehicle);
+        }
+
+        ParkingVehicle parkingVehicle = getParkingVehicle(request.getAptCode(), request.getVehicleNo());
+
+        if (!ObjectUtils.isEmpty(parkingVehicle)) {
+            return VehicleResponseDto.VehicleInfo.setData(parkingVehicle.getAptCode(), parkingVehicle.getVehicleNo());
+        }
+
+        return VehicleResponseDto.VehicleInfo.noData();
+    }
+
+    private ResidentVehicle getResidentVehicle(String aptCode, String vehicleNo) {
+        return residentVehicleRepository.findById(new ResidentVehicleId(aptCode, vehicleNo)).orElse(null);
+    }
+
+    private VisitorVehicle getVisitorVehicle(String aptCode, String vehicleNo) {
+        List<VisitorVehicle> VisitorVehicles = visitorVehicleRepository.findByAptCodeAndVehicleNo(aptCode, vehicleNo);
+
+        if (!CollectionUtils.isEmpty(VisitorVehicles)) {
+            return VisitorVehicles.get(0);
+        }
+
+        return null;
+    }
+
+    private ParkingVehicle getParkingVehicle(String aptCode, String vehicleNo) {
+        List<ParkingVehicle> parkingVehicles = parkingVehicleRepository.findByAptCodeAndVehicleNo(aptCode, vehicleNo);
+
+        if (!CollectionUtils.isEmpty(parkingVehicles)) {
+            return parkingVehicles.get(0);
+        }
+
+        return null;
     }
 }
