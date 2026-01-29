@@ -1,10 +1,7 @@
 package com.windsoft.apartment_parking_manager.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.PropertyNamingStrategy;
 import tools.jackson.databind.annotation.JsonNaming;
@@ -28,6 +25,7 @@ public class VehicleRequestDto {
     @ToString
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class SearchCondition extends RequestContextDto {
         private String vehicleNo;
         private LocalDate startDate;
