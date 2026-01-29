@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <springProperty scope="context" name="LOG_FILE_PATH" source="logging.file.file-path"/>
-    <springProperty scope="context" name="LOG_FILE_NAME" source="logging.file.file-name"/>
-    <springProperty scope="context" name="SLACK_WEBHOOK_URL" source="logging.slack.webhook-url"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd'T'HH:mm:ss.SSSXXX}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr(${LOGGED_APPLICATION_NAME:-}[%15.15t]){faint} %clr(${LOG_CORRELATION_PATTERN:-}){faint}%clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
     <property name="FILE_LOG_PATTERN"
@@ -14,45 +11,6 @@
         <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
         </encoder>
-    </appender>
-
-    <!-- 파일(FILE) -->
-    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--     log 기록할 파일 위치 설정 -->
-        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- daily rollover -->
-            <fileNamePattern>${LOG_FILE_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>7</maxHistory>
-            <totalSizeCap>3GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>error</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}-error.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_FILE_PATH}/${LOG_FILE_NAME}-error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
     </appender>
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
