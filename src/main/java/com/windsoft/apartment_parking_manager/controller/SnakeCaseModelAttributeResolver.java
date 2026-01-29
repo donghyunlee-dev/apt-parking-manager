@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class SnakeCaseMedelAttributeResolver implements HandlerMethodArgumentResolver {
+public class SnakeCaseModelAttributeResolver implements HandlerMethodArgumentResolver {
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
