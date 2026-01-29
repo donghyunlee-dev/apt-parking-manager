@@ -5,10 +5,13 @@ import com.windsoft.apartment_parking_manager.data.entity.id.VisitorVehicleId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface VisitorVehicleRepository extends JpaRepository<VisitorVehicle, VisitorVehicleId> {
     Optional<VisitorVehicle> findByAptCodeAndVehicleNoAndVisitDateLessThanEqualAndVisitCloseDateGreaterThanEqual(String aptCode, String vehicleNo, LocalDate from, LocalDate to);
-    Optional<VisitorVehicle> findByAptCodeAndVehicleNo(String aptCode, String vehicleNo);
+
+    List<VisitorVehicle> findByAptCodeAndVehicleNo(String aptCode, String vehicleNo);
+
     Optional<VisitorVehicle> findById(VisitorVehicleId id);
 }
