@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.security.SecureRandomParameters;
+import java.io.Serializable;
 
 
 @SequenceGenerator(
@@ -20,7 +20,7 @@ import java.security.SecureRandomParameters;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoticeId implements SecureRandomParameters {
+public class NoticeId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
