@@ -1,33 +1,26 @@
-package com.windsoft.apartment_parking_manager.controller;
+package com.windsoft.apartment_parking_manager.service.impl;
 
-import com.windsoft.apartment_parking_manager.data.dto.BaseResponseDto;
 import com.windsoft.apartment_parking_manager.data.dto.NoticeResponseDto;
-import com.windsoft.apartment_parking_manager.data.dto.RequestContext;
+import com.windsoft.apartment_parking_manager.data.entity.Notice;
+import com.windsoft.apartment_parking_manager.data.repository.NoticeRepository;
 import com.windsoft.apartment_parking_manager.service.NoticeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/notice")
-@RestController
-public class NoticeController {
+@Service
+public class NoticeServiceImpl implements NoticeService {
 
-    private final NoticeService noticeService;
+    private final NoticeRepository noticeRepository;
 
-    @GetMapping
-    public ResponseEntity<BaseResponseDto<?>> retrieveNotice(RequestContext context) {
+    @Override
+    public List<NoticeResponseDto.NoticeView> getRecentNotice() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Notice> noticeList = noticeRepository.findByUsedAndOpenAtLessThanEqualAndCloseAtGreaterThanEqual(true, now, now);
 
-        if (context == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        List<NoticeResponseDto.NoticeView> noticeView = noticeService.getRecentNotice();
-
-        return ResponseEntity.ok(new BaseResponseDto<>(noticeView));
+        return noticeList.stream().map(NoticeResponseDto.NoticeView::toDto).toList();
     }
 }
