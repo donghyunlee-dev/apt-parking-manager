@@ -1,10 +1,9 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
 import com.windsoft.apartment_parking_manager.data.entity.id.NoticeId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import com.windsoft.apartment_parking_manager.type.NoticeCategoryType;
+import com.windsoft.apartment_parking_manager.type.NoticeType;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -17,9 +16,11 @@ public class Notice extends BaseEntity {
     @Id
     private long id;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private NoticeCategoryType category;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private NoticeType type;
 
     private String subject;
 
