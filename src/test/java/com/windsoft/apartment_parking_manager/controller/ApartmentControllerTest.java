@@ -34,6 +34,8 @@ class ApartmentControllerTest {
                 .address("인천 남동구 만수동 844-1")
                 .building(1)
                 .resident(1)
+                .deviceId("483CD5AE-4414-023D-E063-74040A0A135D")
+                .finNo("123456")
                 .build();
         ObjectMapper mapper = new ObjectMapper();
         mockMvc.perform(
