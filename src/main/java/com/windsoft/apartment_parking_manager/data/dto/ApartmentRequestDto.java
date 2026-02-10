@@ -24,5 +24,9 @@ public class ApartmentRequestDto {
         private int building;
 
         private int resident;
+
+        private String finNo;
+
+        private String deviceId;
     }
 }
