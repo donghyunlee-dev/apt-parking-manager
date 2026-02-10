@@ -16,9 +16,24 @@ public class ApartmentController {
 
     private final ApartmentService apartmentService;
 
+    @PostMapping
+    public ResponseEntity<?> registerApartment(@RequestBody ApartmentRequestDto.Registration requestDto) {
+        Apartment apartment = apartmentService.createApartment(requestDto);
+
+        ApartmentResponseDto response;
+
+        if (apartment == null) {
+            response = ApartmentResponseDto.noData();
+        } else {
+            response = ApartmentResponseDto.setData(apartment);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping
-    public ResponseEntity<?> searchApartmentInfo(@ModelAttribute ApartmentRequestDto.verify request) {
-        Apartment apartment = apartmentService.retriveApartmentByAddress(request.getAddress());
+    public ResponseEntity<?> searchApartmentInfo(@ModelAttribute ApartmentRequestDto.Verification request) {
+        Apartment apartment = apartmentService.retrieveApartmentByAddress(request.getAddress());
 
         ApartmentResponseDto response;
 
