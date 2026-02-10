@@ -6,6 +6,7 @@ import com.windsoft.apartment_parking_manager.data.entity.id.BouncerId;
 import com.windsoft.apartment_parking_manager.util.AES256GcmConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @IdClass(BouncerId.class)
@@ -21,7 +22,6 @@ public class Bouncer extends BaseEntity {
 
     private String bouncerName;
 
-    @Convert(converter = AES256GcmConverter.class)
     private String finNo;
 
     private String grade;
@@ -31,12 +31,14 @@ public class Bouncer extends BaseEntity {
     private String used;
 
     public static Bouncer toEntity(BouncerRequestDto.Registration admin) {
+        BCryptPasswordEncoder encorder = new BCryptPasswordEncoder();
+
         Bouncer bouncer = new Bouncer();
 
         bouncer.aptCode = admin.getAptCode();
         bouncer.bouncerCode = "B000";
         bouncer.bouncerName = "관리자";
-        bouncer.finNo = admin.getFinNo();
+        bouncer.finNo = encorder.encode(admin.getFinNo());
         bouncer.grade = "A";
         bouncer.deviceId = admin.getDeviceId();
         bouncer.used = "Y";
