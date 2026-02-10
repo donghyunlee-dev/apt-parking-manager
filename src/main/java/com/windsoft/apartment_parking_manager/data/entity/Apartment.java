@@ -1,11 +1,11 @@
 package com.windsoft.apartment_parking_manager.data.entity;
 
+import com.windsoft.apartment_parking_manager.data.dto.ApartmentRequestDto;
 import com.windsoft.apartment_parking_manager.data.entity.id.ApartmentId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -32,4 +32,15 @@ public class Apartment {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public static Apartment newInstance(String newCode, ApartmentRequestDto.Registration apartInfo) {
+        Apartment apartment = new Apartment();
+        apartment.aptCode = newCode;
+        apartment.aptName = apartInfo.getAptName();
+        apartment.address = apartInfo.getAddress();
+        apartment.building = apartInfo.getBuilding();
+        apartment.resident = apartInfo.getResident();
+        apartment.status = "ACTIVE";
+        return apartment;
+    }
 }
