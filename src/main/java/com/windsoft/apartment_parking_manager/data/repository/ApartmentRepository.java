@@ -9,6 +9,8 @@ public interface ApartmentRepository extends JpaRepository<Apartment, ApartmentI
 
     Apartment findByAddressAndStatus(String address, String status);
 
+    Apartment findByAptNameAndStatus(String aptName, String status);
+
     @Query("SELECT MAX(a.aptCode) FROM Apartment a")
     String getMaxApartmentCode();
 }
